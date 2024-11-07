@@ -25,4 +25,15 @@ export const getConfig = (
       logging: true,
     };
   }
+
+  if (databaseDriver === 'mongodb') {
+    const url =
+      configService.get<string>('DATABASE_URL') || 'mongodb://localhost:27017/prac';
+    return {
+      type: 'mongodb',
+      url,
+    };
+  }
+
+  throw new Error(`ДБ ${databaseDriver} не поддерживает`);
 };

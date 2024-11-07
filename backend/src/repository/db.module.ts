@@ -22,4 +22,5 @@ import { Schedules } from '../enities/schedule.entity';
     }),
   ],
 })
+
 export class DatabaseModule {}
