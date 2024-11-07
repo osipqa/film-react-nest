@@ -25,6 +25,4 @@ export const getConfig = (
       logging: true,
     };
   }
-
-  throw new Error(`Не поддерживается драйвер: ${databaseDriver}`);
 };

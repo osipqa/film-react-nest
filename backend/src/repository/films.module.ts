@@ -10,5 +10,4 @@ import { OrderService } from 'src/order/order.service';
   providers: [FilmsRepository, OrderService],
   exports: [FilmsRepository],
 })
-
 export class ReposModule {}

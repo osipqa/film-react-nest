@@ -16,7 +16,8 @@ export interface IFilmsRepository {
 export class FilmsRepository implements IFilmsRepository {
   constructor(
     @InjectRepository(Film) private readonly filmRepository: Repository<Film>,
-    @InjectRepository(Schedules) private readonly scheduleRepository: Repository<Schedules>,
+    @InjectRepository(Schedules)
+    private readonly scheduleRepository: Repository<Schedules>,
   ) {}
 
   async findAll(): Promise<Film[]> {
@@ -43,7 +44,9 @@ export class FilmsRepository implements IFilmsRepository {
     const sessionData = orderDto.tickets.map((ticket) => {
       const session = film.schedules.find((s) => s.id === ticket.session);
       if (!session) {
-        throw new Error(`Сессия с ID ${ticket.session} не найдена для фильма ${film.title}`);
+        throw new Error(
+          `Сессия с ID ${ticket.session} не найдена для фильма ${film.title}`,
+        );
       }
 
       const seatIdentifier = `${ticket.row}:${ticket.seat}`;

@@ -40,7 +40,7 @@ export class OrderService {
       }
 
       const selectedSession = document.schedules.find((i) => i.id === session);
-      
+
       if (!selectedSession) {
         this.logger.error(
           `Сессия с ID ${session} не найдена для фильма ${film}`,
