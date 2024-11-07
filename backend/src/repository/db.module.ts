@@ -1,21 +1,26 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { getConfig } from 'src/app.config.provider';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getConfig } from '../app.config.provider';
+import { Film } from '../enities/film.entity';
+import { Schedules } from '../enities/schedule.entity';
 
 @Module({
   imports: [
     ConfigModule,
-    MongooseModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const { url } = getConfig(configService);
+        const config = getConfig(configService);
         return {
-          uri: url,
+          ...config,
+          entities: [Film, Schedules],
+          synchronize: true,
         };
       },
       inject: [ConfigService],
     }),
   ],
 })
+
 export class DatabaseModule {}
