@@ -32,13 +32,15 @@ export class OrderService {
         `Обработка заказа для фильма: ${film}, сессия: ${session}, место: ${row}:${seat}`,
       );
 
-      const document = await this.filmsRepository.findOneOrder(film);
+      const document = await this.filmsRepository.findOne(film);
+
       if (!document) {
         this.logger.error(`Фильм с ID ${film} не найден`);
         throw new NotFoundException(`Фильм с ID ${film} не найден`);
       }
 
-      const selectedSession = document.schedule.find((i) => i.id === session);
+      const selectedSession = document.schedules.find((i) => i.id === session);
+      
       if (!selectedSession) {
         this.logger.error(
           `Сессия с ID ${session} не найдена для фильма ${film}`,
@@ -55,7 +57,9 @@ export class OrderService {
       }
 
       selectedSession.taken.push(seatIdentifier);
-      await document.save();
+
+      await this.filmsRepository.save(document);
+
       this.logger.log(`Место ${seatIdentifier} успешно забронировано`);
     }
 
