@@ -1,18 +1,30 @@
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Film } from './enities/film.entity';
+import { Schedules } from './enities/schedule.entity';
 
-export const getConfig = (configService: ConfigService) => {
-  const driver = configService.get<string>('DATABASE_DRIVER') || 'mongodb';
-  const url =
-    configService.get<string>('DATABASE_URL') ||
-    'mongodb://localhost:27017/prac';
-  return { driver, url };
+export const getConfig = (
+  configService: ConfigService,
+): TypeOrmModuleOptions => {
+  const databaseDriver = configService.get<string>('DATABASE_DRIVER');
+
+  if (!databaseDriver) {
+    throw new Error('DB_DRIVER не найден');
+  }
+
+  if (databaseDriver === 'postgres') {
+    return {
+      type: 'postgres',
+      host: configService.get<string>('DATABASE_HOST', 'postgres'),
+      port: configService.get<number>('DATABASE_PORT', 5432),
+      username: configService.get<string>('DATABASE_USERNAME', 'postgres'),
+      password: configService.get<string>('DATABASE_PASSWORD', 'password'),
+      database: configService.get<string>('DATABASE_NAME', 'prac'),
+      entities: [Film, Schedules],
+      synchronize: true,
+      logging: true,
+    };
+  }
+
+  throw new Error(`Не поддерживается драйвер: ${databaseDriver}`);
 };
-
-export interface AppConfig {
-  database: AppConfigDatabase;
-}
-
-export interface AppConfigDatabase {
-  driver: string;
-  url: string;
-}
