@@ -32,5 +32,5 @@ MongoDB должна быть установлена и запущена.
 Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
 
 
-
+## http://osipqa.nomorepartiesco.ru/
 
