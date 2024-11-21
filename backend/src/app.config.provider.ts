@@ -15,8 +15,8 @@ export const getConfig = (
   if (databaseDriver === 'postgres') {
     return {
       type: 'postgres',
-      host: configService.get<string>('DATABASE_HOST', 'localhost'),
-      port: configService.get<number>('DATABASE_PORT', 5433),
+      host: configService.get<string>('DATABASE_HOST', 'postgres'),
+      port: configService.get<number>('DATABASE_PORT', 5432),
       username: configService.get<string>('DATABASE_USERNAME', 'postgres'),
       password: configService.get<string>('DATABASE_PASSWORD', 'password'),
       database: configService.get<string>('DATABASE_NAME', 'prac'),
@@ -26,14 +26,5 @@ export const getConfig = (
     };
   }
 
-  if (databaseDriver === 'mongodb') {
-    const url =
-      configService.get<string>('DATABASE_URL') || 'mongodb://localhost:27017/prac';
-    return {
-      type: 'mongodb',
-      url,
-    };
-  }
-
-  throw new Error(`ДБ ${databaseDriver} не поддерживает`);
+  throw new Error(`Не поддерживается драйвер: ${databaseDriver}`);
 };

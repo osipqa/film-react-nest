@@ -16,13 +16,7 @@ export class FilmsService {
   async getFilmSchedule(id: string) {
     const film = await this.filmsRepository.findOne(id);
 
-    if (!film) {
-      throw new Error('Фильм не найден');
-    }
-
-    const scheduleData = 'schedule' in film ? film.schedule : film.schedules;
-
-    const formattedSchedule = scheduleData.map((schedule) => {
+    const formattedSchedule = film.schedules.map((schedule) => {
       return {
         id: schedule.id,
         daytime: schedule.daytime,

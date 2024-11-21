@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema()
+@Schema({ _id: false })
 export class Order {
   @Prop({ required: true, unique: true })
   id: string;
@@ -24,4 +24,4 @@ export class Order {
   taken: string[];
 }
 
-export const OrderSchema = SchemaFactory.createForClass(Order);
+export const ScheduleSchema = SchemaFactory.createForClass(Order);

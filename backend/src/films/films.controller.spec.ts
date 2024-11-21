@@ -10,7 +10,6 @@ const mockFilmsService = {
 
 describe('FilmsController', () => {
   let controller: FilmsController;
-  let service: FilmsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,7 +23,6 @@ describe('FilmsController', () => {
     }).compile();
 
     controller = module.get<FilmsController>(FilmsController);
-    service = module.get<FilmsService>(FilmsService);
   });
 
   it('Должен определен быть', () => {
@@ -33,8 +31,13 @@ describe('FilmsController', () => {
 
   describe('getFilms', () => {
     it('Должен возвращать список фильмов', async () => {
-
-      const result = { total: 2, items: [{ id: '1', title: 'Film 1' }, { id: '2', title: 'Film 2' }] };
+      const result = {
+        total: 2,
+        items: [
+          { id: '1', title: 'Film 1' },
+          { id: '2', title: 'Film 2' },
+        ],
+      };
       mockFilmsService.getAllFilms.mockResolvedValue(result);
 
       expect(await controller.getFilms()).toBe(result);
@@ -65,9 +68,13 @@ describe('FilmsController', () => {
 
     it('Должен выбрасывать NotFoundException если фиьм не найден', async () => {
       const filmId = 'nonexistent-film';
-      mockFilmsService.getFilmSchedule.mockRejectedValue(new NotFoundException('Фильм не найден'));
+      mockFilmsService.getFilmSchedule.mockRejectedValue(
+        new NotFoundException('Фильм не найден'),
+      );
 
-      await expect(controller.getFilmSchedule(filmId)).rejects.toThrowError(NotFoundException);
+      await expect(controller.getFilmSchedule(filmId)).rejects.toThrowError(
+        NotFoundException,
+      );
       expect(mockFilmsService.getFilmSchedule).toHaveBeenCalledWith(filmId);
     });
   });

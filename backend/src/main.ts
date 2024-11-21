@@ -9,24 +9,22 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
+  app.setGlobalPrefix('api/afisha');
+  app.enableCors({ origin: '*' });
 
-  const logFormat = process.env.LOG_FORMAT || 'dev';
-  let logger;
+  const loggerType = process.env.LOGGER_TYPE || 'dev';
 
-  switch (logFormat) {
+  switch (loggerType) {
     case 'json':
-      logger = new JsonLogger();
+      app.useLogger(new JsonLogger());
       break;
     case 'tskv':
-      logger = new TskvLogger();
+      app.useLogger(new TskvLogger());
       break;
     default:
-      logger = new DevLogger();
+      app.useLogger(new DevLogger());
   }
 
-  app.useLogger(logger);
-  app.setGlobalPrefix('api/afisha');
-  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();

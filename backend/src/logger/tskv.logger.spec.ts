@@ -10,6 +10,8 @@ describe('TskvLogger', () => {
 
   it('Корректный формат логов', () => {
     logger.log('Test message');
-    expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/time=.*\tlevel=log\tmessage=Test message/));
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringMatching(/time=.*\tlevel=log\tmessage=Test message/),
+    );
   });
 });
