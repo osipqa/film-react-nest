@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FilmsRepository } from 'src/repository/films.repository';
+import { FilmsRepository } from '../repository/films.repository';
 
 @Injectable()
 export class FilmsService {
@@ -16,7 +16,13 @@ export class FilmsService {
   async getFilmSchedule(id: string) {
     const film = await this.filmsRepository.findOne(id);
 
-    const formattedSchedule = film.schedule.map((schedule) => {
+    if (!film) {
+      throw new Error('Фильм не найден');
+    }
+
+    const scheduleData = 'schedule' in film ? film.schedule : film.schedules;
+
+    const formattedSchedule = scheduleData.map((schedule) => {
       return {
         id: schedule.id,
         daytime: schedule.daytime,

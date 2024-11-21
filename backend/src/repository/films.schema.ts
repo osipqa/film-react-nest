@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Schedule } from 'src/films/film.schema';
-import { ScheduleSchema } from 'src/order/order.schema';
+import { OrderSchema } from 'src/order/order.schema';
 
 export type FilmDocument = Film & Document;
 
@@ -34,7 +34,7 @@ export class Film {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ type: [ScheduleSchema], required: true })
+  @Prop({ type: [OrderSchema], required: true })
   schedule: Schedule[];
 }
 
